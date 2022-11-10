@@ -1,0 +1,79 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc,patterns,decorations.markings,decorations.pathmorphing,positioning}
+
+\begin{document} 
+\newcommand{\zeiger}[2]{
+	\def \radius{#2 / 2}
+	\def \angle{#1}
+	\def \offset{0.5cm}
+	\def \massSize{0.2cm}
+		
+	% Koordinatensystem
+	\draw[->, gray] (-\radius-\offset,0) -- (\radius+\offset,0);
+	\draw[->, gray] (0,-\radius-\offset) -- (0,\radius+\offset);
+	
+	% Winkelanzeiger
+	\filldraw[fill opacity=0.3, color=blue!70]
+	(0,0) -- (\offset,0mm) arc (0:\angle:\offset) -- (0,0) node[opacity=1] at (0.5*\angle:1.5*\offset) {\tiny $\angle$°};
+		
+	% Kreis
+	\node[circle,draw,minimum size=\radius * 2, dashed, line width=0.7pt, gray] (c) at (0,0){}; 
+		
+	% Pfeil und Masse
+	\draw[->, >=latex, line width=1pt](0:0) -- (\angle:\radius-\massSize);
+	\draw[fill opacity=0.5,fill=red, red!60] (\angle:\radius) circle (\massSize);
+}
+
+\newcommand{\myfig}[3]{
+	\tikzstyle{spring}=[thick,decorate,decoration={aspect=0.5, segment length=#1, amplitude=2mm,coil}]
+	\tikzstyle{platform}=[fill,pattern=north east lines,draw=none,minimum width=2cm,minimum height=0.3cm]
+	
+	\coordinate (g) at (0,0);
+	\coordinate (topspring) at (0,-0.2cm);
+	\coordinate (bottomspring) at (0,{#2}); 
+	\coordinate (pt2) at ($(bottomspring) + (0,-.2cm)$); 
+	\coordinate (pt3) at ($(pt2) + (0,#3)$); 
+	
+	\node [platform,anchor=south] at (g)  {};
+	\draw[very thick] (-1,0) -- (1,0);
+	\draw [thick](topspring)--(g);
+	\draw [spring] (bottomspring) -- (topspring);
+	\draw [thick] (bottomspring) -- (pt2.north);
+	\draw [opacity=0.5,fill=red, red!60] (pt3) circle (#3);
+}
+
+\begin{tikzpicture}
+	\def \height{4cm}
+	\def \xoffset{1cm}
+	\zeiger{90}{\height}
+	\begin{scope}[xshift=\height/2 + 2cm, yshift=\height/2 + 0.4cm + \xoffset]
+		\myfig{0.7mm}{0 - \xoffset)}{-0.2cm}
+	\end{scope}
+\end{tikzpicture}
+\begin{tikzpicture}
+	\def \height{4cm}
+	\def \xoffset{1cm}
+	\zeiger{45}{\height}
+	\begin{scope}[xshift=\height/2 + 2cm, yshift=\height/2 + 0.4cm + \xoffset]
+		\myfig{1mm}{((-\height/2) * (1 - cos(45)) - \xoffset)}{-0.2cm}
+	\end{scope}
+\end{tikzpicture}
+\begin{tikzpicture}
+	\def \height{4cm}
+	\def \xoffset{1cm}
+	\zeiger{0}{\height}
+	\begin{scope}[xshift=\height/2 + 2cm, yshift=\height/2 + 0.4cm + \xoffset]
+		\myfig{2mm}{(-\height/2)  -\xoffset}{-0.2cm}
+	\end{scope}
+\end{tikzpicture}
+\begin{tikzpicture}
+	\def \height{4cm}
+	\def \xoffset{1cm}
+	\zeiger{270}{\height}
+	\begin{scope}[xshift=\height/2 + 2cm, yshift=\height/2 + 0.4cm + \xoffset]
+		\myfig{3.3mm}{(-\height) - \xoffset)}{-0.2cm}
+	\end{scope}
+\end{tikzpicture}
+
+\end{document}

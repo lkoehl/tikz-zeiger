@@ -1,2 +1,4 @@
 # tikz-zeiger
-Zeigerformalismus nach Feynman
+Zeigerformalismus-Diagramme nach Feynman
+
+![Example diagrams](example.png?raw)
